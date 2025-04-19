@@ -60,8 +60,14 @@
 
 <script>
 const keys = document.querySelectorAll(".key");
+let isTouchDevice = false; 
 
 function playSound(event) {
+  // ignores click event detected on touvh device
+  if (event.type === 'click' && isTouchDevice) {
+    return;
+  }
+
   const dataKey = event.type === 'keydown' ? event.keyCode : this.dataset.key;
   const audio = document.querySelector(`audio[data-key="${dataKey}"]`);
   const key = document.querySelector(`.key[data-key="${dataKey}"]`);
@@ -77,6 +83,10 @@ function removeTransition(e) {
   this.classList.remove("playing");
 }
 
+
+window.addEventListener('touchstart', () => {
+  isTouchDevice = true;
+}, { once: true });
 
 window.addEventListener("keydown", playSound);
 
